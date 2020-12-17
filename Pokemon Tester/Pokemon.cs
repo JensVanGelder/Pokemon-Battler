@@ -92,12 +92,10 @@ namespace Pokemon_Tester
         public string PrintDexInfo()
         {
             return
-                $"\n#|Name|Type|Total|HP|Attack|Defense|Sp. Atk|Sp. Def|Speed|Average|" +
-                $"\n----------------------------------------------" +
-                $"\n{Number}|{Name}|{Type}{Type2}|{Total}|{HP_Base}|{Attack_Base}|{Defense_Base}|{SpecialAttack_Base}|{SpecialDefense_Base}|{Speed_Base}|{Average}|";
+                $"{Number}|{Name}|{Type}|{Type2}|{Total}|{HP_Base}|{Attack_Base}|{Defense_Base}|{SpecialAttack_Base}|{SpecialDefense_Base}|{Speed_Base}|{Average}|";
         }
 
-        public string PrintMyPokemonInfo()
+        public string PrintFullPokemonInfo()
         {
             return
             $"#{Number} | {Name} ({Level}) | {Type}{Type2} | Battles Won:{BattlesWon}" +
@@ -121,15 +119,20 @@ namespace Pokemon_Tester
                 $"\n\t* Speed           = {Speed_Full}";
         }
 
-        public string PrintBasicInfo(Pokemon poke)
+        public string PrintMyPokeInfo()
         {
-            if (poke is null)
+            return $"#{Number}|{Name}|{Level}|{Type}|{Type2}|Battles won: {BattlesWon}|{HP_Base}|{Attack_Base}|{Defense_Base}|{SpecialAttack_Base}|{SpecialDefense_Base}|{Speed_Base}";
+        }
+
+        public string PrintBasicInfo()
+        {
+            if (Name is null)
             {
                 return "No data";
             }
             else
             {
-                return $"#{Number}|{Name}({Level})|{Type}{Type2}|Average stats: {Average_Full}";
+                return $"#{Number}|{Name}({Level})|{Type}|{Type2}|Average stats: {Average_Full}|Battles won: {BattlesWon}";
             }
         }
     }
