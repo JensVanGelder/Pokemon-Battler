@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Pokemon_Tester
+﻿namespace Pokemon_Tester
 {
     internal class Pokemon
     {
@@ -55,14 +53,6 @@ namespace Pokemon_Tester
         public int Average { get { return (HP_Base + Attack_Base + Defense_Base + SpecialAttack_Base + SpecialDefense_Base + Speed_Base) / 6; } }
         public int Total { get { return HP_Base + Attack_Base + Defense_Base + SpecialAttack_Base + SpecialDefense_Base + Speed_Base; } }
 
-        public int Level
-        {
-            get { return level; }
-            private set { level = value; }
-        }
-
-        public int BattlesWon { get; set; }
-
         public int HP_Full { get { return (((HP_Base + 50) * Level) / 50) + 10; } }
         public int Attack_Full { get { return ((Attack_Base * Level) / 50) + 5; } }
         public int Defense_Full { get { return ((Defense_Base * Level) / 50) + 5; } }
@@ -71,6 +61,22 @@ namespace Pokemon_Tester
         public int Speed_Full { get { return ((Speed_Base * Level) / 50) + 5; } }
         public int Average_Full { get { return (HP_Full + Attack_Full + Defense_Full + SpecialAttack_Full + SpecialDefense_Full + Speed_Full) / 6; } }
         public int Total_Full { get { return HP_Full + Attack_Full + Defense_Full + SpecialAttack_Full + SpecialDefense_Full + Speed_Full; } }
+
+        public int Level
+        {
+            get { return level; }
+            private set { level = value; }
+        }
+
+        public int BattlesWon { get; set; }
+        public int hpCurrent;
+
+        public int HP_Current
+        {
+            get { return hpCurrent; }
+            set { hpCurrent = value; }
+        }
+
 
         //Methods
 
@@ -82,11 +88,14 @@ namespace Pokemon_Tester
             }
         }
 
+        public void TakeDamage(int damage)
+        {
+            HP_Current -= damage;
+        }
+
         public void WinBattle()
         {
-
-                BattlesWon++;
-
+            BattlesWon++;
         }
 
         public string PrintDexInfo()

@@ -51,6 +51,14 @@ namespace Pokemon_Tester
             LevelByAmount(newExPoke, RNGGen(1, 100));
             return newExPoke;
         }
+        public Pokemon GeneratorExistingRandomPokemon(List<Pokemon> pokedex, int floor, int ceiling)
+        {
+            int rng = RNGGen(1, pokedex.Count);
+            Pokemon newExPoke = new Pokemon();
+            newExPoke = pokedex[rng];
+            LevelByAmount(newExPoke, RNGGen(floor, ceiling));
+            return newExPoke;
+        }
 
         private static int RNGGen(int lowerbound, int upperbound)
         {
