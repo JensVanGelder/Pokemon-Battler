@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
+using System;
 
 namespace Pokemon_Tester
 {
@@ -21,48 +20,38 @@ namespace Pokemon_Tester
             const string PATHMYPOKE = "myPoke.txt";
             const string PATHMYPOKEFULL = "myPokeFull.txt";
             const string PATHENEMYPOKE = "enemyPoke.txt";
-            dataManager.PokedexExists(pokedex,PATHDEX);
+            dataManager.PokedexExists(pokedex, PATHDEX);
 
-
-            Pokemon randomPoke1 =  generator.GeneratorExistingRandomPokemon(pokedex,30,35);
-            Pokemon randomPoke2 = generator.GeneratorExistingRandomPokemon(pokedex,30,35);
+            Pokemon randomPoke1 = generator.GeneratorExistingRandomPokemon(pokedex, 30, 35);
+            Pokemon randomPoke2 = generator.GeneratorExistingRandomPokemon(pokedex, 30, 35);
             Pokemon rand1 = generator.GeneratorMyPokemon(pokedex, "Charmander", 30);
             Pokemon rand2 = generator.GeneratorMyPokemon(pokedex, "Abomasnow", 30);
             //Pokemon lvl100 = generator.GeneratorMyPokemon(pokedex, "Mew", 99);
-            //myPokes.Add(randomPoke1);
+            myPokes.Add(randomPoke1);
 
+            //Read pokemons from file, print full info in console, choose one of the read pokemon and let it battle x times, write back to file
+            fileReaderWriter.ReadMyPokemon(myPokes, myPokesRead, PATHMYPOKE);
+            foreach (Pokemon i in myPokesRead)
+            {
+                Console.WriteLine(i.PrintFullPokemonInfo());
+            }
+            battle.BattleRandomXTimes(myPokesRead[5], 10, pokedex, enemyPokes, 30, 35);
+
+            fileReaderWriter.WritePokemonToFile(myPokesRead, PATHMYPOKE, false);
+
+            //Print Full info about pokemon in console
             //Console.WriteLine(randomPoke1.PrintFullPokemonInfo());
             //Console.WriteLine(randomPoke2.PrintFullPokemonInfo());
 
+            //Show X times random generated battles
+            //battle.BattleRandomXTimes(randomPoke1, 10, pokedex, enemyPokes, 30, 35);
 
-            battle.BattleRandomXTimes(randomPoke1, 15, pokedex, enemyPokes,30,35);
-
-            //Console.WriteLine(rand1.PrintBasicInfo());
-            //Console.WriteLine(rand2.PrintBasicInfo());
-            //Console.WriteLine(adv.GetTypeMultiplier(rand1,rand2));
+            //Show 1 battle between two pokemon
             //battle.ShowBattle(rand1, rand2);
-
-            //fileReaderWriter.ReadMyPokemon(myPokes, myPokes, PATHMYPOKE);
-
-            //battle.BattleRandomXTimes(myPokes[4], 10, pokedex, enemyPokes);
-
-            //Console.WriteLine(randomPoke1.PrintMyPokeInfo());
-
-
-            //foreach (Pokemon i in myPokesRead)
-            //{
-            //    Console.WriteLine(myPokesRead);
-            //}
-
-
 
             //fileReaderWriter.WritePokemonToFileFull(myPokes, PATHMYPOKEFULL);
             //fileReaderWriter.WritePokemonToFile(myPokes, PATHMYPOKE, true);
             //fileReaderWriter.WritePokemonToFileFull(enemyPokes, PATHENEMYPOKE);
         }
-
-
-
-
     }
 }
