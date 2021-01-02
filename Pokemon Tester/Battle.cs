@@ -7,7 +7,10 @@ namespace Pokemon_Tester
     internal class Battle
     {
         private static int winner;
+        private bool isCrit;
+        private bool isSP;
         private TypeAdvantages adv = new TypeAdvantages();
+        private Random random = new Random();
 
         public void BattleRandomXTimes(Pokemon poke1, int amountBattles, List<Pokemon> pokedex, List<Pokemon> enemyPokes, int floor = 1, int ceiling = 100)
         {
@@ -114,44 +117,57 @@ namespace Pokemon_Tester
         public int DamageCalc(Pokemon poke1, Pokemon poke2)
         {
             // damage = (((((2*poke1.level)/5)+2)*MovePower*(poke1.attack/poke2.defense)/50)+2)
-            double poke2def = poke2.Defense_Full;
-            double poke1atk = poke1.Attack_Full;
-            double poke1level = poke1.Level;
-            poke1.HP_Current = poke1.HP_Full;
-            poke2.HP_Current = poke2.HP_Full;
-            double multiplier = adv.GetTypeMultiplier(poke1, poke2);
-            double damage = Math.Ceiling((((((((2.0 * poke1level) / 5.0) + 2) * 50) * (poke1atk / poke2def)) / 50) + 2) * multiplier);
-            return Convert.ToInt32(damage);
-        }
-
-        public int DamageCalcSp(Pokemon poke1, Pokemon poke2)
-        {
-            // damage = (((((2*poke1.level)/5)+2)*MovePower*(poke1.attack/poke2.defense)/50)+2)
+            RollCrit(poke1);
             double poke2SpDef = poke2.SpecialDefense_Full;
             double poke1SpAtk = poke1.SpecialAttack_Full;
             double poke1level = poke1.Level;
-            poke1.HP_Current = poke1.HP_Full;
-            poke2.HP_Current = poke2.HP_Full;
-            double multiplier = adv.GetTypeMultiplier(poke1, poke2);
-            double damage = Math.Ceiling((((((((2.0 * poke1level) / 5.0) + 2) * 50) * (poke1SpAtk / poke2SpDef)) / 50) + 2) * multiplier);
-            return Convert.ToInt32(damage);
+            double critMult = 1.0;
+            CheckIfSP(poke1);
+            if (isCrit == true)
+            {
+                critMult = 2.0;
+            }
+            double multiplier = adv.GetTypeMultiplier(poke1, poke2)*MultiplierRand(random,0.85,1.0)*critMult;
+            double damagecalc1 = Math.Ceiling(((2.0 * poke1level) / 5.0) + 2)*50*GetAttack(poke1)/GetDef(poke2);
+            double damagecalc2 = Math.Round((((((2.0 * poke1level) / 5.0) + 2) * 50 * GetAttack(poke1) / GetDef(poke2) / 50) + 2) * multiplier);
+            return Convert.ToInt32(damagecalc2);
         }
 
-        public int CheckifSp(Pokemon poke1, Pokemon poke2)
+        private void CheckIfSP(Pokemon poke1)
         {
             if (poke1.SpecialAttack_Full > poke1.Attack_Full)
             {
-                Console.WriteLine($"\t│   {poke1.Name} is a Special based attacker");
-                return DamageCalcSp(poke1, poke2);
+                isSP = true;
             }
             else
             {
-                Console.WriteLine($"\t│   {poke1.Name} is a Normal based attacker");
-                return DamageCalc(poke1, poke2);
+                isSP = false;
+            }
+        }
+        private int GetAttack(Pokemon poke)
+        {
+            if (isSP == true)
+            {
+                return poke.SpecialAttack_Full;
+            }
+            else
+            {
+                return poke.Attack_Full;
+            }
+        }
+        private int GetDef(Pokemon poke)
+        {
+            if (isSP == true)
+            {
+                return poke.SpecialDefense_Full;
+            }
+            else
+            {
+                return poke.Defense_Full;
             }
         }
 
-        public string CheckWeakness(Pokemon poke1, Pokemon poke2)
+        public string PrintWeakness(Pokemon poke1, Pokemon poke2)
         {
             double weakness = adv.GetTypeMultiplier(poke1, poke2);
             switch (weakness)
@@ -169,6 +185,18 @@ namespace Pokemon_Tester
                     return "0.5x effective";
                 default:
                     return "";
+            }
+        }
+
+        public string PrintCrit()
+        { 
+            if (isCrit == true)
+            {
+                return "CRITICAL HIT";
+            }
+            else
+            {
+                return "";
             }
         }
 
@@ -199,23 +227,25 @@ namespace Pokemon_Tester
 
         public void BattleCalc(Pokemon poke1, Pokemon poke2)
         {
-            int poke1DMG = CheckifSp(poke1, poke2);
-            int poke2DMG = CheckifSp(poke2, poke1);
+            poke1.HP_Current = poke1.HP_Full;
+            poke2.HP_Current = poke2.HP_Full;
             Console.WriteLine($"\t│   {poke2.Name} is faster than {poke1.Name}");
             Console.WriteLine("\t└─────────────────────────────────────────────────────────────────────┘");
             do
             {
                 Thread.Sleep(1500);
+                int poke2DMG = DamageCalc(poke2, poke1);
                 poke1.TakeDamage(poke2DMG);
-                Console.WriteLine($"\t│   {poke1.Name} takes {poke2DMG}DMG    {CheckWeakness(poke2, poke1)}");
+                Console.WriteLine($"\t│   {poke1.Name} takes {poke2DMG}DMG    {PrintWeakness(poke2, poke1)}    {PrintCrit()}");
                 Console.WriteLine($"\t│      HP({poke1.HP_Current}/{poke1.HP_Full}) [{HpBar(poke1)}]\n\t│");
                 if (poke1.HP_Current <= 0)
                 {
                     Console.WriteLine("\t└─────────────────────────────────────────────────────────────────────┘");
                     break;
                 }
+                int poke1DMG = DamageCalc(poke1, poke2);
                 poke2.TakeDamage(poke1DMG);
-                Console.WriteLine($"\t│   {poke2.Name} takes {poke1DMG}DMG    {CheckWeakness(poke1, poke2)}");
+                Console.WriteLine($"\t│   {poke2.Name} takes {poke1DMG}DMG    {PrintWeakness(poke1, poke2)}    {PrintCrit()}");
                 Console.WriteLine($"\t│      HP({poke2.HP_Current}/{poke2.HP_Full}) [{HpBar(poke2)}]");
                 Console.WriteLine("\t└─────────────────────────────────────────────────────────────────────┘");
             } while (poke1.HP_Current > 0 && poke2.HP_Current > 0);
@@ -247,6 +277,25 @@ namespace Pokemon_Tester
                 hpBar += "-";
             }
             return hpBar;
+        }
+
+        public double MultiplierRand (Random random, double min, double max)
+        {
+            return min + (random.NextDouble() * (max - min));
+        }
+
+        public void RollCrit(Pokemon poke)
+        {
+            int threshold = poke.Speed_Base / 2;
+            int rand = random.Next(0, 255);
+            if (rand<threshold)
+            {
+                isCrit = true;
+            }
+            else
+            {
+                isCrit = false;
+            }
         }
     }
 }
