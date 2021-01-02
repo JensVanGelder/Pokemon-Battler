@@ -2,9 +2,8 @@
 {
     internal class TypeAdvantages
     {
-        public double GetTypeMultiplier(Pokemon poke1, Pokemon poke2)
+        public double GetTypeMultiplier(string type, Pokemon poke2)
         {
-            string type = poke1.Type;
             switch (type)
             {
                 case "Normal":
@@ -130,7 +129,7 @@
                         break;
 
                     case "Ghost":
-                        dmgMultTotal *= 0;
+                        dmgMultTotal = 0;
                         break;
 
                     default:
@@ -202,7 +201,7 @@
                         break;
 
                     case "Ground":
-                        dmgMultTotal *= 0;
+                        dmgMultTotal = 0;
                         break;
 
                     case "Flying":
@@ -362,7 +361,7 @@
                         break;
 
                     case "Ghost":
-                        dmgMultTotal *= 0;
+                        dmgMultTotal = 0;
                         break;
 
                     case "Dark":
@@ -414,7 +413,7 @@
                         break;
 
                     case "Steel":
-                        dmgMultTotal *= 0;
+                        dmgMultTotal = 0;
                         break;
 
                     case "Fairy":
@@ -454,7 +453,7 @@
                         break;
 
                     case "Flying":
-                        dmgMultTotal *= 0;
+                        dmgMultTotal = 0;
                         break;
 
                     case "Bug":
@@ -538,7 +537,7 @@
                         break;
 
                     case "Dark":
-                        dmgMultTotal *= 0;
+                        dmgMultTotal = 0;
                         break;
 
                     case "Steel":
@@ -662,7 +661,7 @@
                 switch (item)
                 {
                     case "Normal":
-                        dmgMultTotal *= 0;
+                        dmgMultTotal = 0;
                         break;
 
                     case "Psychic":
@@ -702,7 +701,7 @@
                         break;
 
                     case "Fairy":
-                        dmgMultTotal *= 0;
+                        dmgMultTotal = 0;
                         break;
 
                     default:

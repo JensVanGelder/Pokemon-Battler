@@ -27,7 +27,8 @@ namespace Pokemon_Tester
             Console.Write("Press a button to continue.");
             Console.ReadLine();
             Console.Clear();
-            BattleXTimes(2);
+            //Battle2ChosenPoke("Charmander","Squirtle",100);
+            BattleXTimes(3);
         }
 
         public void BattleXTimes(int amountBattles)
@@ -38,6 +39,12 @@ namespace Pokemon_Tester
             fileReaderWriter.WritePokemonToFileFull(myPokes, PATHMYPOKEFULL);
             fileReaderWriter.WritePokemonToFile(myPokes, PATHMYPOKE, true);
             fileReaderWriter.WritePokemonToFileFull(enemyPokes, PATHENEMYPOKE);
+        }
+        public void Battle2ChosenPoke(string name, string name2, int level)
+        {
+            Pokemon rand1 = generator.GeneratorMyPokemon(pokedex, name, level);
+            Pokemon rand2 = generator.GeneratorMyPokemon(pokedex, name2, level);
+            battle.ShowBattle(rand1, rand2);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Pokemon_Tester
+﻿using System;
+
+namespace Pokemon_Tester
 {
     internal class Pokemon
     {
@@ -77,8 +79,59 @@
             set { hpCurrent = value; }
         }
 
+        public int currentMoveDmg = 50;
 
-        //Methods
+        public int Current_Move_DMG
+        {
+            get { return currentMoveDmg; }
+            set { currentMoveDmg = value; }
+        }
+
+        public string currentMoveType;
+
+        public string Current_Move_Type
+        {
+            get { return currentMoveType; }
+            set { currentMoveType = value; }
+        }
+
+        private string[] moves;
+
+        public string[] Moves
+        {
+            get { return moves; }
+            set { moves = value; }
+        }
+
+        public void SetCurrentMoveType(string type)
+        {
+            currentMoveType = type;
+        }
+
+        public void SetCurrentMoveType()
+        {
+            Random rand = new Random();
+            int index = rand.Next(0, 2);
+            currentMoveType = moves[index];
+        }
+
+        public void AssignMoves()
+        {
+            Generators gen = new Generators();
+            if (Type2 != "")
+            {
+                Moves = new string[4] { Type, Type2, gen.RandomType(), gen.RandomType() };
+            }
+            else
+            {
+                Moves = new string[4] { Type, gen.RandomType(), gen.RandomType(), gen.RandomType() };
+            }
+        }
+
+        public string PrintType()
+        {
+            return Type;
+        }
 
         public void LevelUp()
         {
