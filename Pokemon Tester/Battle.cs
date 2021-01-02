@@ -55,6 +55,7 @@ namespace Pokemon_Tester
                     poke2.LevelUp();
                     poke2.WinBattle();
                     return 2;
+                    //test
                 }
             }
         }
