@@ -120,12 +120,13 @@ namespace Pokemon_Tester
             RollCrit(poke1);
             double poke1level = poke1.Level;
             double critMult = 1.0;
+            double stab = CheckIfStab(poke1);
             CheckIfSP(poke1);
             if (isCrit == true)
             {
                 critMult = 2.0;
             }
-            double multiplier = adv.GetTypeMultiplier(poke1.currentMoveType, poke2) * MultiplierRand(random, 0.85, 1.0) * critMult;
+            double multiplier = adv.GetTypeMultiplier(poke1.currentMoveType, poke2) * MultiplierRand(random, 0.85, 1.0) * critMult * stab;
             double damagecalc2 = Math.Round((((((2.0 * poke1level) / 5.0) + 2) * poke1.currentMoveDmg * GetAttack(poke1) / GetDef(poke2) / 50) + 2) * multiplier);
             return Convert.ToInt32(damagecalc2);
         }
@@ -139,6 +140,17 @@ namespace Pokemon_Tester
             else
             {
                 isSP = false;
+            }
+        }
+        private double CheckIfStab(Pokemon poke1)
+        {
+            if (poke1.currentMoveType == poke1.Type || poke1.currentMoveType == poke1.Type2)
+            {
+                return 1.5;
+            }
+            else
+            {
+                return 1.0;
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Pokemon_Tester
 {
@@ -20,20 +19,61 @@ namespace Pokemon_Tester
         const string PATHMYPOKEFULL = "myPokeFull.txt";
         const string PATHENEMYPOKE = "enemyPoke.txt";
 
+        private string asciiTitle = @"
+        ██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ █████╗ ███╗   ██╗███████╗
+        ██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔══██╗████╗  ██║██╔════╝
+        ██████╔╝██║   ██║█████╔╝ █████╗  ██╔████╔██║███████║██╔██╗ ██║███████╗
+        ██╔═══╝ ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╔╝██║██╔══██║██║╚██╗██║╚════██║
+        ██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║███████║
+        ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝
+                                                                              
+
+";
         public void MainMenu()
         {
             dataManager.PokedexExists(pokedex, PATHDEX);
-            Console.WriteLine("Welcome");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine(asciiTitle);
             Console.Write("Press a button to continue.");
             Console.ReadLine();
             Console.Clear();
-            //Battle2ChosenPoke("Charmander","Squirtle",100);
-            BattleXTimes(3);
+            Console.WriteLine(asciiTitle);
+
+            Console.WriteLine("Modes:" +
+                "\n1.Choose your own pokemon" +
+                "\n2.Random pokemon");
+            ConsoleKeyInfo cki;
+            cki = Console.ReadKey(true);
+            if (cki.Key == ConsoleKey.NumPad1)
+            {
+                string poke1 = "";
+                string poke2 = "";
+                int level = 50;
+                Console.WriteLine("Choose your pokemon.");
+                Console.Write("\nName:");
+                poke1 = Console.ReadLine();
+                Console.WriteLine("Choose enemy pokemon.");
+                Console.Write("\nName:");
+                poke2 = Console.ReadLine();
+                Console.WriteLine("Choose their level");
+                Console.Write("\nLevel:");
+                level = Convert.ToInt32(Console.ReadLine());
+                Battle2ChosenPoke(poke1, poke2, level);
+            }
+            else if (cki.Key == ConsoleKey.NumPad2)
+            {
+                BattleXTimes(3, 50, 55);
+            }
+            else
+            {
+                Console.WriteLine("ERROR");
+                MainMenu();
+            }
         }
 
-        public void BattleXTimes(int amountBattles)
+        public void BattleXTimes(int amountBattles, int lowestLvl, int highestLvl)
         {
-            Pokemon randomPoke1 = generator.GeneratorExistingRandomPokemon(pokedex, 30, 35);
+            Pokemon randomPoke1 = generator.GeneratorExistingRandomPokemon(pokedex, lowestLvl,highestLvl);
             myPokes.Add(randomPoke1);
             battle.BattleRandomXTimes(randomPoke1, amountBattles, pokedex, enemyPokes, randomPoke1.Level + randomPoke1.BattlesWon, randomPoke1.Level + randomPoke1.BattlesWon + 2);
             fileReaderWriter.WritePokemonToFileFull(myPokes, PATHMYPOKEFULL);
